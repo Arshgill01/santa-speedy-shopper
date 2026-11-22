@@ -1,0 +1,22 @@
+{
+  "id": "santa-speedy-shopper",
+  "name": "Santa's Speedy Shopper",
+  "description": "Find and live-verify 5 real in-stock Christmas gifts across real retail stores in a single parallel tool call.",
+  "version": "0.1.0",
+  "configSchema": {
+    "type": "object",
+    "properties": {},
+    "additionalProperties": false
+  },
+  "activation": {
+    "onStartup": true
+  },
+  "skills": [
+    "./skills"
+  ],
+  "contracts": {
+    "tools": [
+      "sleigh_shop"
+    ]
+  }
+}

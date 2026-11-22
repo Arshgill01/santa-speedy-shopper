@@ -1,0 +1,37 @@
+{
+  "name": "openclaw-plugin-santa-speedy-shopper",
+  "version": "0.1.0",
+  "description": "Ultra-fast 2-turn OpenClaw plugin for Santa's Speedy Shopper: parallel live retail storefront search + in-stock variant verification in a single tool call, built for Kimi K3.1 Pro on Cerebras.",
+  "type": "module",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run"
+  },
+  "files": [
+    "dist",
+    "skills",
+    "openclaw.plugin.json",
+    "config",
+    "README.md"
+  ],
+  "peerDependencies": {
+    "openclaw": ">=2026.5.17"
+  },
+  "dependencies": {
+    "typebox": "^1.1.38"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.0",
+    "vitest": "^3.2.0"
+  },
+  "openclaw": {
+    "extensions": [
+      "./dist/index.js"
+    ],
+    "compat": {
+      "pluginApi": ">=2026.5.17"
+    }
+  }
+}
