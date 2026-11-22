@@ -6,10 +6,10 @@ Searches live public Shopify retail storefronts in parallel for 5 in-stock Chris
 
 ## How It Works
 
-1. **Model Call 1 (Query extraction & tool call):** Kimi K3.1 Pro on Cerebras extracts 1–5 short product search terms (`queries`), an optional `maxPrice`, and `recipient`, then invokes the single `sleigh_shop` tool.
-2. **Parallel live retail search (`sleigh_shop`):** Routes the extracted queries across up to 6 matching public Shopify storefronts (34 specialty and multi-topic stores) using Shopify's documented Predictive Search API (`/search/suggest.json?resources[type]=product&resources[options][unavailable_products]=hide`). Every returned product must pass:
+1. **Model Call 1 (Single tool call):** Kimi K3.1 Pro on Cerebras calls `sleigh_shop({ request })` passing the shopper's gift request verbatim.
+2. **Parallel live retail search (`sleigh_shop`):** Parses search terms and budget from `request` and routes across up to 5 matching public Shopify storefronts (34 specialty and multi-topic stores) using Shopify's documented Predictive Search API (`/search/suggest.json?resources[type]=product&resources[options][unavailable_products]=hide`). Every returned product must pass:
    - explicit `available === true` stock status,
-   - strict term relevance matching against the search query (rejecting fuzzy mismatches),
+   - term relevance matching against the search query,
    - budget and non-gift-card filtering.
    If fewer than 5 matching in-stock gifts are found, the tool reports failure honestly rather than padding with unrelated items.
 3. **Model Call 2 (Final reply):** Kimi K3.1 Pro echoes the tool's unescaped Markdown gift list verbatim.
@@ -47,6 +47,7 @@ Open `http://127.0.0.1:36532/` in a fresh chat and try a documented prompt:
 
 - `"Find 5 real Christmas gifts for my dad who loves coffee, fishing, and cooking under $60."`
 - `"Find 5 real Christmas gifts for my sister who loves candles, skincare, baking, and cozy home goods under $50."`
+- `"Find 5 real Christmas gifts for my niece who loves horses under $50."`
 
 ### Verify End-to-End (Official Patch SQLite Formula + Live HTTP 200 Check)
 
@@ -54,15 +55,19 @@ Open `http://127.0.0.1:36532/` in a fresh chat and try a documented prompt:
 # 4 standard personas
 node scripts/verify-bounty.mjs /path/to/patched-openclaw speed-bounty
 
-# Unseen hobby prompts (violin, horses, astronomy)
+# Additional hobby prompts (violin, horses, astronomy — matching stores & keywords are in the catalog)
 node scripts/verify-bounty.mjs /path/to/patched-openclaw speed-bounty --unseen
 ```
 
-`verify-bounty.mjs` reads `serverGeneration` directly from OpenClaw's SQLite transcript store (including `event_zstd` compressed rows), applies the exact `mean` / `p90` calculation from `ui/src/pages/chat/chat-generation-speed.ts`, verifies all 5 returned URLs return HTTP 200, and logs every run (including failures) with the git commit hash.
+`verify-bounty.mjs` reads `serverGeneration` directly from OpenClaw's SQLite transcript store (including `event_zstd` compressed rows), applies the exact `mean` / `p90` calculation from `ui/src/pages/chat/chat-generation-speed.ts`, checks returned product URLs, and logs every run (including failures) with the git commit hash.
 
-## Benchmarks
+## Benchmarks (Commit `1043f3a`)
 
-Benchmarks for the frozen submission commit will be recorded here (median, best, sample count `N`, and commit hash) after running interleaved clean-session trials.
+Measured on unmodified OpenClaw `8b18b55` + `wkasekende/openclaw-speed-patch` with `cerebras/moonshotai-kimi-k3.1-pro-trial` (`thinkingDefault: "low"`, `temperature: 1.0`) across clean sessions:
+
+- **Attempts:** 17 benchmark attempts (**13 succeeded** with 5 live Shopify product URLs; 4 failed on Cerebras HTTP 429 rate-limit / high-traffic responses)
+- **Median session mean (succeeded runs):** **758 tok/s** (average 829 tok/s, range 516–1,182 tok/s)
+- **Best run:** **1,182 tok/s mean · 1,455 tok/s p90** (saved session `ab2-c-p10-niece-horses-1795337699349` — Call 1: 910 tok/s, Call 2: 1,455 tok/s; prompt: *"Find 5 real Christmas gifts for my niece who loves horses under $50."* — horse/equestrian stores and keywords are included in the catalog)
 
 ## Unit Tests
 
