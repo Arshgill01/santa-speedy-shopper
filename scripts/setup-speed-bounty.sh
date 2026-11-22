@@ -41,16 +41,17 @@ cp "$REPO_DIR/config/openclaw.json5" "$PROFILE_DIR/openclaw.json"
 rm -f "$PROFILE_DIR/workspace/"{BOOTSTRAP.md,HEARTBEAT.md,MEMORY.md,TOOLS.md}
 cat << 'WSEOF' > "$PROFILE_DIR/workspace/AGENTS.md"
 # Santa's Speedy Shopper
-Step 1: Immediately call `sleigh_shop` with `request` copied verbatim. Do not deliberate.
-Step 2: Output the tool result verbatim with zero preamble or changes. Do not deliberate.
+1. Immediately call `sleigh_shop` with short product search `queries` (1-5 terms), `maxPrice` (if stated), and `recipient`. Skip reasoning.
+2. Echo the tool output verbatim as your final reply. Skip reasoning.
 WSEOF
 echo "Santa's Speedy Shopper" > "$PROFILE_DIR/workspace/IDENTITY.md"
 echo "Fast, accurate holiday gift assistant." > "$PROFILE_DIR/workspace/SOUL.md"
-echo "Shopper looking for 5 real verified Christmas gifts." > "$PROFILE_DIR/workspace/USER.md"
+echo "Shopper looking for 5 real in-stock Christmas gifts." > "$PROFILE_DIR/workspace/USER.md"
 
 echo "==> 3/4 Linking plugin into profile '$PROFILE'..."
 node "$OC" --profile "$PROFILE" plugins install --force --link "$REPO_DIR" --accept-capabilities
 
 echo "==> 4/4 Done! Ready to run:"
+echo "  Verify: node \"$REPO_DIR/scripts/verify-bounty.mjs\" \"$OPENCLAW_DIR\" \"$PROFILE\""
 echo "  CLI:    node \"$OC\" --profile \"$PROFILE\" agent --local --session-id santa-demo -m \"Find 5 real Christmas gifts for my dad who loves coffee, fishing, and cooking under \\\$60.\""
 echo "  Web UI: node \"$OC\" --profile \"$PROFILE\" gateway --port 36532 --allow-unconfigured --auth none"

@@ -1,7 +1,7 @@
 {
   "id": "santa-speedy-shopper",
   "name": "Santa's Speedy Shopper",
-  "description": "Find and live-verify 5 real in-stock Christmas gifts across real retail stores in a single parallel tool call.",
+  "description": "Search real Shopify retail stores in parallel and return 5 live in-stock Christmas gifts with prices and links.",
   "version": "0.1.0",
   "configSchema": {
     "type": "object",

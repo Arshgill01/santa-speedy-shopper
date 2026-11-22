@@ -7,14 +7,16 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "test": "vitest run"
+    "test": "vitest run",
+    "verify": "node scripts/verify-bounty.mjs"
   },
   "files": [
     "dist",
     "skills",
     "openclaw.plugin.json",
     "config",
-    "README.md"
+    "README.md",
+    "scripts"
   ],
   "peerDependencies": {
     "openclaw": ">=2026.5.17"

@@ -1,5 +1,5 @@
 // Ultra-lean OpenClaw config for Cerebras x Kimi K3.1 Pro Speed Bounty.
-// Strips bundled skills and extra tools so prompt context stays minimal for maximum server decode TPS.
+// Strips bundled plugins, skills, memory slot, and extra tools so KV cache stays minimal for peak server decode TPS.
 {
   agents: {
     defaults: {
@@ -42,6 +42,12 @@
           },
         ],
       },
+    },
+  },
+  plugins: {
+    allow: ["santa-speedy-shopper"],
+    slots: {
+      memory: "none",
     },
   },
   skills: {
