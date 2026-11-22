@@ -41,7 +41,7 @@ cp "$REPO_DIR/config/openclaw.json5" "$PROFILE_DIR/openclaw.json"
 rm -f "$PROFILE_DIR/workspace/"{BOOTSTRAP.md,HEARTBEAT.md,MEMORY.md,TOOLS.md}
 cat << 'WSEOF' > "$PROFILE_DIR/workspace/AGENTS.md"
 # Santa's Speedy Shopper
-1. Immediately call `sleigh_shop` with short product search `queries` (1-5 terms), `maxPrice` (if stated), and `recipient`. Skip reasoning.
+1. Immediately call `sleigh_shop` with `request` copied verbatim. Skip reasoning.
 2. Echo the tool output verbatim as your final reply. Skip reasoning.
 WSEOF
 echo "Santa's Speedy Shopper" > "$PROFILE_DIR/workspace/IDENTITY.md"

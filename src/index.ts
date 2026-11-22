@@ -15,25 +15,12 @@ export default defineToolPlugin({
         "Search live retail storefronts in parallel for 5 in-stock Christmas gifts matching the user's interests and budget.",
       workspaceAccess: false,
       parameters: Type.Object({
-        queries: Type.Array(Type.String(), {
-          minItems: 1,
-          maxItems: 5,
-          description:
-            "1 to 5 short product search terms for the user's interests (e.g. ['coffee', 'fishing', 'cooking'] or ['violin', 'sheet music']).",
+        request: Type.String({
+          description: "The shopper's exact gift request verbatim",
         }),
-        maxPrice: Type.Optional(
-          Type.Number({
-            description: "Maximum price per gift in USD if stated by the user (e.g. 60).",
-          }),
-        ),
-        recipient: Type.Optional(
-          Type.String({
-            description: "Short recipient label (e.g. 'dad', 'aunt').",
-          }),
-        ),
       }),
-      async execute({ queries, maxPrice, recipient }, _config, context) {
-        const result = await shopForGifts(guardedFetch, { queries, maxPrice, recipient }, context.signal);
+      async execute({ request }, _config, context) {
+        const result = await shopForGifts(guardedFetch, { request }, context.signal);
         return result.formatted;
       },
     }),
