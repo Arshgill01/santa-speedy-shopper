@@ -184,7 +184,7 @@ for (let runIdx = 1; runIdx <= repeatRuns; runIdx++) {
         const res = await fetch(u, {
           method: "GET",
           redirect: "follow",
-          headers: { "user-agent": "Mozilla/5.0" },
+          headers: { "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36", "accept-language": "en-US,en;q=0.9" },
           signal: AbortSignal.timeout(6000),
         }).catch(() => ({ status: 0 }));
         return { url: u, status: res.status };

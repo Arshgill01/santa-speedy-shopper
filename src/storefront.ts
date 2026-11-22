@@ -141,7 +141,7 @@ const STOP_WORDS = new Set([
 
 const QUERY_FILLER_WORDS = new Set([
   "a", "an", "the", "of", "for", "and", "or", "in", "on", "to", "with", "set", "kit",
-  "gift", "gifts", "item", "items", "gear", "goods", "minimalist", "cozy", "modern",
+  "gift", "gifts", "item", "items", "gear", "goods", "accessories", "accessory", "supplies", "equipment", "essentials", "product", "products", "minimalist", "cozy", "modern",
   "classic", "unique", "cool", "cute", "nice", "great", "best", "real", "holiday", "christmas",
 ]);
 
@@ -353,7 +353,7 @@ function normalizeQueries(input: ShopInput): {
 
 export function planStoreSearches(
   input: ShopInput,
-  maxStores = 6,
+  maxStores = 5,
 ): {
   recipient: string;
   maxPrice: number | undefined;
@@ -564,7 +564,7 @@ export async function shopForGifts(
 ): Promise<SleighShopResult> {
   const t0 = performance.now();
   const normalizedInput: ShopInput = typeof input === "string" ? { request: input } : input;
-  const { recipient, maxPrice, queries, searches } = planStoreSearches(normalizedInput, 6);
+  const { recipient, maxPrice, queries, searches } = planStoreSearches(normalizedInput, 5);
 
   if (searches.length === 0) {
     return {

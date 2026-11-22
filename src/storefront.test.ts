@@ -53,6 +53,8 @@ describe("santa-speedy-shopper storefront", () => {
     expect(matchesSearchTerm({ title: "Solo Pieces for the Beginning Violinist", type: "Sheet Music" }, "violin")).toBe(true);
     expect(matchesSearchTerm({ title: "The Wild Horse Effect" }, "horses")).toBe(true);
     expect(matchesSearchTerm({ title: "Astronomy A5 Softcover Notebook" }, "astronomy")).toBe(true);
+    expect(matchesSearchTerm({ title: "Old School Photography" }, "photography accessories")).toBe(true);
+    expect(matchesSearchTerm({ title: "Keychron Desk Mat" }, "minimalist desk accessories")).toBe(true);
   });
 
   it("requires explicit available === true (rejects null, undefined, and false)", async () => {
